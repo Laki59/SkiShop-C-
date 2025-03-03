@@ -1,0 +1,25 @@
+﻿@model salalal.Models.Ski
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Add New Ski</h2>
+    <form method="post" asp-action="AddSki">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" asp-for="Name" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Model</label>
+            <input type="text" asp-for="Model" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Price ($)</label>
+            <input type="number" asp-for="Price" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Stock Quantity</label>
+            <input type="number" asp-for="StockQuantity" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Add Ski</button>
+        <a href="@Url.Action("ManageSkis", "Admin")" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

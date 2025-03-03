@@ -1,0 +1,33 @@
+﻿
+@model List<salalal.Models.User>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Manage Skis</h2>
+    <a class="btn btn-success mb-3" href="@Url.Action("AddSki", "Admin")">Add New Ski</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                    <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Username</td>
+                    <td>@user.Role</td>
+                        <td>
+                           
+                                <button type="submit" class="btn btn-info btn-sm">Update Stock</button>
+                            
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>

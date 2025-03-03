@@ -1,0 +1,48 @@
+﻿@model salalal.Models.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "My Account";
+}
+
+<div class="account-container">
+    <h2>Welcome, @Model.UserName!</h2>
+
+    <div class="user-info">
+        <p><strong>Role:</strong> @Model.Role</p>
+        <p><strong>Password:</strong> @Model.Password</p>
+    </div>
+
+    <button id="toggleOrders" class="btn btn-primary">Your Orders</button>
+
+    <div id="ordersSection" class="orders-list" style="display: none;">
+        @if (Model.Orders.Any())
+        {
+            @foreach (var order in Model.Orders)
+            {
+                var totalPrice = order.OrderItems.Sum(item => item.Quantity * item.Price);
+
+                <div class="order-card p-3 mb-3 border rounded">
+                    <h4>Order #@order.Id - @order.OrderDate.ToShortDateString()</h4>
+                    <ul>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Ski.Name - @item.Quantity x $@item.Price</li>
+                        }
+                    </ul>
+                    <p><strong>Total Price:</strong> $@totalPrice</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>You haven't placed any orders yet.</p>
+        }
+    </div>
+</div>
+
+<script>
+    document.getElementById("toggleOrders").addEventListener("click", function () {
+        var ordersSection = document.getElementById("ordersSection");
+        ordersSection.style.display = ordersSection.style.display === "none" ? "block" : "none";
+    });
+</script>

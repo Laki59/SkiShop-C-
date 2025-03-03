@@ -1,0 +1,50 @@
+﻿@model List<OrderItem>
+
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<div class="cart-container">
+    <h2>Your Shopping Cart</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="empty-cart">Your cart is empty.</p>
+    }
+    else
+    {
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Ski</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Ski.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>$@item.Price</td>
+                        <td>$@(item.Quantity * item.Price)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="cart-total">
+            <strong>Total Price:</strong>
+            <span class="total-amount">
+                $@(Model.Sum(item => item.Quantity * item.Price))
+            </span>
+        </div>
+
+        <div class="cart-buttons">
+            <a href="/Ski/Index" class="btn btn-secondary">Continue Shopping</a>
+            <a href="/Cart/Checkout" class="btn btn-primary">Checkout</a>
+        </div>
+    }
+</div>

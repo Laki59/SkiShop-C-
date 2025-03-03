@@ -1,0 +1,28 @@
+﻿@model List<Ski>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold text-uppercase">Explore Our Skis</h2>
+    <div class="row">
+        @foreach (var ski in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card border-0 shadow-lg rounded-4">
+                    <img src="~/Images/alpi.jpg" class="card-img-top rounded-top-4" alt="@ski.Name" style="height: 250px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">@ski.Name</h5>
+                        <p class="card-text text-muted"><strong>Model:</strong> @ski.Model</p>
+                        <p class="card-text fs-5 text-primary fw-bold">$@ski.Price</p>
+
+                        <span class="badge bg-@(ski.StockQuantity > 5 ? "success" : ski.StockQuantity > 0 ? "warning" : "danger")">
+                            @(ski.StockQuantity > 5 ? "In Stock" : ski.StockQuantity > 0 ? "Low Stock" : "Out of Stock")
+                        </span>
+
+                        <div class="mt-3">
+                            <a href="/Ski/Details/@ski.Id" class="btn btn-outline-primary px-4">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

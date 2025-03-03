@@ -1,0 +1,253 @@
+
+
+body {
+    font-family: 'Poppins',sans-serif;
+}
+
+button {
+    font-size: 0.9rem;
+    font-weight: 850;
+    outline: none;
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 10px 30px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+}
+
+    button:hover {
+        background-color: rgb(26, 26, 250);
+    }
+
+p {
+    font-size: 1.5rem;
+
+}
+
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+
+}
+
+h2 {
+    font-size: 1.9rem;
+    font-weight: 550;
+
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+
+}
+
+h4 {
+    font-size: 1.1rem;
+    font-weight: 620;
+
+}
+
+#home {
+    background-image: url('../Images/Bgskije.jpg');
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position-y: -20px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+    #home span {
+        color: blue;
+    }
+#banner {
+    background-image: url('../Images/banner.jpg');
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position-y: -20px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .cart-table th, .cart-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-table th {
+        background: #f4f4f4;
+    }
+
+.cart-total {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: right;
+}
+
+.total-amount {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.cart-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+    .cart-buttons .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .cart-buttons .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+
+    .cart-buttons .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .cart-buttons .btn:hover {
+        opacity: 0.8;
+    }
+
+.empty-cart {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 20px;
+}
+.ski-details-container {
+    max-width: 900px;
+    margin: 50px auto;
+    display: flex;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    gap: 20px;
+}
+
+.ski-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.ski-info {
+    flex: 1;
+}
+
+    .ski-info h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .ski-info p {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+.ski-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+    .ski-buttons .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .ski-buttons .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+
+    .ski-buttons .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .ski-buttons .btn:hover {
+        opacity: 0.8;
+    }
+
+.account-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.user-info p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.orders-list {
+    margin-top: 20px;
+}
+
+.order-card {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+    .order-card h4 {
+        margin-bottom: 10px;
+    }
+
+    .order-card ul {
+        padding-left: 20px;
+    }
+
+.btn-primary {
+    margin-top: 15px;
+}
+
+

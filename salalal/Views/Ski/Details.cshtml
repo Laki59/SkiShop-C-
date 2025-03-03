@@ -1,0 +1,32 @@
+﻿@model salalal.Models.Ski
+
+@{
+    ViewData["Title"] = "Ski Details";
+}
+
+<div class="ski-details-container">
+    <div class="ski-image">
+        <img src="~/Images/alpi.jpg" alt="@Model.Name">
+    </div>
+
+    <div class="ski-info">
+        <h2>@Model.Name</h2>
+        <p><strong>Model:</strong> @Model.Model</p>
+        <p><strong>Price:</strong> $@Model.Price</p>
+        <p><strong>Stock::</strong> @Model.StockQuantity</p>
+
+        <div class="ski-buttons">
+            @if (Model.StockQuantity != 0)
+            {
+
+                <a href="/" class="btn btn-secondary">Back to Shop</a>
+                <a href="/Cart/AddToCart/@Model.Id" class="btn btn-primary">Add to Cart</a>
+
+            }
+            else{
+                <p>Sorry the item is out of stock</p>
+                <a href="/" class="btn btn-secondary">Back to Shop</a>
+            }
+        </div>
+    </div>
+</div>

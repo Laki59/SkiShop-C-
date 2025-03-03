@@ -1,0 +1,38 @@
+﻿@model List<salalal.Models.Order>
+
+<h2>All Orders</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.User.Username</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>
+                    <ul>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Ski.Name - @item.Quantity x $@item.Price</li>
+                        }
+                    </ul>
+                </td>
+                <td>$@(order.OrderItems.Sum(i => i.Quantity * i.Price))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
