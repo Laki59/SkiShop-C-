@@ -102,17 +102,20 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <form method="post" action="/Account/Logout">
-                                <button type="submit" class="btn btn-danger">Logout</button>
+                            <form method="post" action="/Account/Logout" class="d-inline">
+                                <button type="submit" class="nav-link btn btn-link text-danger p-0 border-0" style="background: none;">Logout</button>
                             </form>
                         </li>
                     }
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white px-3 rounded-3" href="/Account/Login">Login</a>
+                            <form method="get" action="/Account/Login" class="d-inline">
+                                <button type="submit" class="nav-link btn btn-link p-0 border-0" style="background: none;">Login</button>
+                            </form>
                         </li>
                     }
+
                 </ul>
             </div>
         </div>

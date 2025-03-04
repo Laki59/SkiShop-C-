@@ -15,7 +15,7 @@ public class AdminController : Controller
         _skiRepository = skiRepository;
     }
 
-    // -------------- USER MANAGEMENT ----------------
+    // -------------- KORISNICI ----------------
     public IActionResult ManageUsers()
     {
         var users = _userRepository.GetAllUsers();
@@ -47,7 +47,7 @@ public class AdminController : Controller
         return RedirectToAction("ManageUsers");
     }
 
-    // -------------- SKI MANAGEMENT ----------------
+    // -------------- SKIJE ----------------
     public IActionResult ManageSkis()
     {
         var skis = _skiRepository.GetAllSkis();
@@ -55,12 +55,14 @@ public class AdminController : Controller
     }
 
     [HttpGet]
+    //Klikom na add ski dugme samo vraca view na koji treba ici
     public IActionResult AddSki()
     {
         return View("AddSki");
     }
 
     [HttpPost]
+    // Upisuje nove skije koje smo ubacili i proverava da li su sva polja ok
     public IActionResult AddSki(Ski ski)
     {
         if (ModelState.IsValid)
@@ -73,7 +75,8 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    public IActionResult EditSki(int id)
+    // Klikom na edit dugme sve informacije o skiji se ispisu
+    public IActionResult EditSki(int id) 
     {
         var ski = _skiRepository.GetSkiById(id);
         if (ski == null) return NotFound();
@@ -82,6 +85,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    // Ako nesto izmenimo,ono ce to i upisati
     public IActionResult EditSki(Ski ski)
     {
         if (ModelState.IsValid)

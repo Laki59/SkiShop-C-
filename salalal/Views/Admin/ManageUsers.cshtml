@@ -1,9 +1,7 @@
-﻿
-@model List<salalal.Models.User>
+﻿@model List<salalal.Models.User>
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Manage Skis</h2>
-    <a class="btn btn-success mb-3" href="@Url.Action("AddSki", "Admin")">Add New Ski</a>
+    <h2 class="text-center mb-4">Manage Users</h2>
 
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
@@ -17,16 +15,23 @@
         <tbody>
             @foreach (var user in Model)
             {
-                    <tr>
+                <tr>
                     <td>@user.Id</td>
                     <td>@user.Username</td>
                     <td>@user.Role</td>
-                        <td>
-                           
-                                <button type="submit" class="btn btn-info btn-sm">Update Stock</button>
-                            
-                        </td>
-                    </tr>
+                    <td>
+                        @if (user.Role != "Admin")
+                        {
+                            <a class="btn btn-warning btn-sm" href="@Url.Action("EditUser", "Admin", new { id = user.Id })">Edit</a>
+                            <a class="btn btn-danger btn-sm" href="@Url.Action("DeleteUser", "Admin", new { id = user.Id })"
+                               onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Admin (Cannot edit/delete)</span>
+                        }
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
