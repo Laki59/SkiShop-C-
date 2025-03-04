@@ -23,16 +23,6 @@ namespace salalal.Repositories
                 .ToList();
         }
 
-        public IEnumerable<Order> GetPendingOrders()
-        {
-            return _context.Orders
-                .Where(o => o.Status == "Pending")
-                .Include(o => o.User)
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Ski)
-                .ToList();
-        }
-
         public Order GetOrderById(int id)
         {
             return _context.Orders
@@ -51,9 +41,18 @@ namespace salalal.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Order> GetPendingOrders()
+        {
+            return _context.Orders
+                .Where(o => o.Status == "Pending")
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Ski)
+                .ToList();
+        }
+
         public void AddOrder(Order order)
         {
-            order.Status = "Pending"; // Default za status je Pending
             _context.Orders.Add(order);
             _context.SaveChanges();
         }
@@ -64,6 +63,17 @@ namespace salalal.Repositories
             if (order != null)
             {
                 order.Status = status;
+                _context.SaveChanges();
+            }
+        }
+
+        public void DeleteOrder(int id)
+        {
+            var order = _context.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == id);
+            if (order != null)
+            {
+                _context.OrderItems.RemoveRange(order.OrderItems); // Remove associated items
+                _context.Orders.Remove(order); // Remove order
                 _context.SaveChanges();
             }
         }

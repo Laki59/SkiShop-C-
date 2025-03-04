@@ -8,29 +8,56 @@ using System.Linq;
 public class EmployeeController : Controller
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly ISkiRepository _skiRepository;
 
-    public EmployeeController(IOrderRepository orderRepository)
+    public EmployeeController(IOrderRepository orderRepository, ISkiRepository skiRepository)
     {
         _orderRepository = orderRepository;
+        _skiRepository = skiRepository;
     }
 
-    public IActionResult ManageOrders() //Uzima sve ordere koji imaju pending status
+    // Uzimamo sve ordere sa PENDING na mestu statusa iz DB i salje na Employee/ManageOrders view
+    public IActionResult ManageOrders()
     {
-        var pendingOrders = _orderRepository.GetPendingOrders();
+        var pendingOrders = _orderRepository.GetAllOrders().Where(o => o.Status == "Pending").ToList();
         return View("ManageOrders", pendingOrders);
     }
 
+    // Po pritisku Approve dugmeta na Employee/ManageOrders view-u,ona menja status na Approve za id tog Ordera
     [HttpPost]
-    public IActionResult ApproveOrder(int orderId) // Dugme approved menja status na approved
+    public IActionResult ApproveOrder(int id)
     {
-        _orderRepository.UpdateOrderStatus(orderId, "Approved");
+        var order = _orderRepository.GetOrderById(id);
+        if (order == null) return NotFound();
+
+        order.Status = "Approved";
+        _orderRepository.SaveChanges(); // Update order status in the database
+
         return RedirectToAction("ManageOrders");
     }
 
+    // Po pritisku Reject dugmeta na Employee/ManageOrders view-u,ono brise taj order,i vraca quantity skijama
     [HttpPost]
-    public IActionResult RejectOrder(int orderId) // Ovo dugme na reject
+    public IActionResult RejectOrder(int id)
     {
-        _orderRepository.UpdateOrderStatus(orderId, "Rejected");
+        var order = _orderRepository.GetOrderById(id);
+        if (order == null) return NotFound();
+
+        // Vraca quantity
+        foreach (var item in order.OrderItems)
+        {
+            var ski = _skiRepository.GetSkiById(item.SkiId);
+            if (ski != null)
+            {
+                ski.StockQuantity += item.Quantity; 
+                _skiRepository.UpdateSki(ski);
+            }
+        }
+
+        // Brise order
+        _orderRepository.DeleteOrder(id);
+        _orderRepository.SaveChanges();
+
         return RedirectToAction("ManageOrders");
     }
 }

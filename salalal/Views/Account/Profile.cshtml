@@ -4,46 +4,73 @@
     ViewData["Title"] = "My Account";
 }
 
-<div class="account-container">
-    <h2>Welcome, @Model.UserName!</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="mb-3 text-center">Welcome, @Model.UserName! 🎿</h2>
 
-    <div class="user-info">
-        <p><strong>Role:</strong> @Model.Role</p>
-        <p><strong>Password:</strong> @Model.Password</p>
-    </div>
+        <div class="border p-3 rounded bg-light">
+            <p><strong>Role:</strong> <span class="badge bg-info">@Model.Role</span></p>
+            <p><strong>Password:</strong> <span class="text-muted">@Model.Password</span></p>
+        </div>
 
-    <button id="toggleOrders" class="btn btn-primary">Your Orders</button>
+        <button id="toggleOrders" class="btn btn-primary mt-4 w-100">
+            <i class="fas fa-shopping-cart"></i> Your Orders
+        </button>
 
-    <div id="ordersSection" class="orders-list" style="display: none;">
-        @if (Model.Orders.Any())
-        {
-            @foreach (var order in Model.Orders)
+        <div id="ordersSection" class="mt-3" style="display: none;">
+            @if (Model.Orders.Any())
             {
-                var totalPrice = order.OrderItems.Sum(item => item.Quantity * item.Price);
+                @foreach (var order in Model.Orders)
+                {
+                    var totalPrice = order.OrderItems.Sum(item => item.Quantity * item.Price);
 
-                <div class="order-card p-3 mb-3 border rounded">
-                    <h4>Order #@order.Id - @order.OrderDate.ToShortDateString()</h4>
-                    <ul>
-                        @foreach (var item in order.OrderItems)
-                        {
-                            <li>@item.Ski.Name - @item.Quantity x $@item.Price</li>
-                        }
-                    </ul>
-                    <p><strong>Total Price:</strong> $@totalPrice</p>
-                    <p><strong>@order.Status</p>
-                </div>
+                    <div class="card mb-3">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">Order #@order.Id - @order.OrderDate.ToShortDateString()</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ski</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in order.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>@item.Ski.Name</td>
+                                            <td>@item.Quantity</td>
+                                            <td>$@item.Price</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <p class="mt-3"><strong>Total Price:</strong> <span class="text-success">$@totalPrice</span></p>
+                            <p><strong>Status:</strong> <span class="badge @(order.Status == "Approved" ? "bg-success" : "bg-warning")">@order.Status</span></p>
+                        </div>
+                    </div>
+                }
             }
-        }
-        else
-        {
-            <p>You haven't placed any orders yet.</p>
-        }
+            else
+            {
+                <p class="text-muted text-center mt-3">You haven't placed any orders yet.</p>
+            }
+        </div>
     </div>
 </div>
 
 <script>
     document.getElementById("toggleOrders").addEventListener("click", function () {
         var ordersSection = document.getElementById("ordersSection");
-        ordersSection.style.display = ordersSection.style.display === "none" ? "block" : "none";
+        if (ordersSection.style.display === "none") {
+            ordersSection.style.display = "block";
+            this.innerHTML = '<i class="fas fa-times"></i> Hide Orders';
+        } else {
+            ordersSection.style.display = "none";
+            this.innerHTML = '<i class="fas fa-shopping-cart"></i> Your Orders';
+        }
     });
 </script>

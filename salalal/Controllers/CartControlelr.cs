@@ -41,6 +41,12 @@ namespace salalal.Controllers
             if (ski == null)
                 return NotFound();
 
+            if (ski.StockQuantity <= 0)
+            {
+                TempData["Error"] = $"Not enough stock for {ski.Name}";
+                return RedirectToAction("Index");
+            }
+
             var existingItem = cart.FirstOrDefault(i => i.SkiId == skiId);
             if (existingItem != null)
             {
@@ -56,9 +62,36 @@ namespace salalal.Controllers
                 });
             }
 
+            ski.StockQuantity--;  // Decrease stock when adding to cart
+            _skiRepository.UpdateSki(ski);
+
             HttpContext.Session.SetObjectAsJson("Cart", cart);
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        public IActionResult RemoveFromCart(int skiId)
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<List<OrderItem>>("Cart") ?? new List<OrderItem>();
+            var itemToRemove = cart.FirstOrDefault(i => i.SkiId == skiId);
+
+            if (itemToRemove != null)
+            {
+                cart.Remove(itemToRemove);
+
+                // Increase stock back when removing from cart
+                var ski = _skiRepository.GetSkiById(skiId);
+                if (ski != null)
+                {
+                    ski.StockQuantity += itemToRemove.Quantity;
+                    _skiRepository.UpdateSki(ski);
+                }
+
+                HttpContext.Session.SetObjectAsJson("Cart", cart);
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         public IActionResult Checkout()
         {
@@ -80,28 +113,15 @@ namespace salalal.Controllers
 
                 foreach (var item in cart)
                 {
-                    var ski = _skiRepository.GetSkiById(item.SkiId);
-
-                    if (ski != null && ski.StockQuantity >= item.Quantity)
+                    var orderItem = new OrderItem
                     {
-                        ski.StockQuantity -= item.Quantity;
-                        _skiRepository.UpdateSki(ski);
+                        OrderId = order.Id,
+                        SkiId = item.SkiId,
+                        Quantity = item.Quantity,
+                        Price = item.Price
+                    };
 
-                        var orderItem = new OrderItem
-                        {
-                            OrderId = order.Id,
-                            SkiId = item.SkiId,
-                            Quantity = item.Quantity,
-                            Price = item.Price
-                        };
-
-                        _orderItemRepository.AddOrderItem(orderItem);
-                    }
-                    else
-                    {
-                        TempData["Error"] = $"Not enough stock for {ski.Name}";
-                        return RedirectToAction("Index");
-                    }
+                    _orderItemRepository.AddOrderItem(orderItem);
                 }
             }
             else

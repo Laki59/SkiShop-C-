@@ -13,13 +13,14 @@
     }
     else
     {
-        <table class="cart-table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Ski</th>
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
+                    <th>Action</th> <!-- New Column for Remove Button -->
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +31,12 @@
                         <td>@item.Quantity</td>
                         <td>$@item.Price</td>
                         <td>$@(item.Quantity * item.Price)</td>
+                        <td>
+                            <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="skiId" value="@item.SkiId" />
+                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>

@@ -1,52 +1,42 @@
 ﻿@model List<salalal.Models.Order>
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Order Approval</h2>
-
-    @if (Model.Any())
-    {
-        <table class="table table-bordered">
-            <thead class="table-dark">
+    <h2 class="text-center mb-4">Pending Orders</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
                 <tr>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Items</th>
-                    <th>Total Price</th>
-                    <th>Actions</th>
+                    <td>@order.Id</td>
+                    <td>@order.User.Username</td>
+                    <td>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Ski.Name - @item.Quantity x $@item.Price</li>
+                        }
+                    </td>
+                    <td>$@(order.OrderItems.Sum(i => i.Quantity * i.Price))</td>
+                    <td>
+                        <form method="post" action="@Url.Action("ApproveOrder", "Employee")" class="d-inline">
+                            <input type="hidden" name="id" value="@order.Id" />
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                        <form method="post" action="@Url.Action("RejectOrder", "Employee")" class="d-inline">
+                            <input type="hidden" name="id" value="@order.Id" />
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model)
-                {
-                    <tr>
-                        <td>@order.Id</td>
-                        <td>@order.User.Username</td>
-                        <td>
-                            <ul>
-                                @foreach (var item in order.OrderItems)
-                                {
-                                    <li>@item.Ski.Name - @item.Quantity x $@item.Price</li>
-                                }
-                            </ul>
-                        </td>
-                        <td>$@(order.OrderItems.Sum(i => i.Quantity * i.Price))</td>
-                        <td>
-                            <form method="post" action="@Url.Action("ApproveOrder", "Employee")">
-                                <input type="hidden" name="orderId" value="@order.Id" />
-                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                            </form>
-                            <form method="post" action="@Url.Action("RejectOrder", "Employee")" class="mt-1">
-                                <input type="hidden" name="orderId" value="@order.Id" />
-                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p class="text-center">No pending orders.</p>
-    }
+            }
+        </tbody>
+    </table>
 </div>
