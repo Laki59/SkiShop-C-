@@ -2,22 +2,42 @@
 using Microsoft.AspNetCore.Mvc;
 using salalal.Models;
 using System.Linq;
+using System.Security.Claims;
 
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
     private readonly IUserRepository _userRepository;
     private readonly ISkiRepository _skiRepository;
+    private readonly IOrderRepository _orderRepository;
 
-    public AdminController(IUserRepository userRepository, ISkiRepository skiRepository)
+    public AdminController(IUserRepository userRepository, ISkiRepository skiRepository, IOrderRepository orderRepository)
     {
         _userRepository = userRepository;
         _skiRepository = skiRepository;
+        _orderRepository = orderRepository;
     }
 
-    // -------------- KORISNICI ----------------
+    private bool IsAdmin()
+    {
+        return User.IsInRole("Admin");
+    }
+
+    private IActionResult RedirectToHomeIfNotAdmin()
+    {
+        if (!IsAdmin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        return null;
+    }
+
+    // -------------- USERS ----------------
     public IActionResult ManageUsers()
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         var users = _userRepository.GetAllUsers();
         return View("ManageUsers", users);
     }
@@ -25,6 +45,9 @@ public class AdminController : Controller
     [HttpGet]
     public IActionResult EditUser(int id)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         var user = _userRepository.GetUserById(id);
         if (user == null) return NotFound();
 
@@ -34,6 +57,9 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult EditUser(User user)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         if (!ModelState.IsValid) return View(user);
 
         _userRepository.UpdateUser(user);
@@ -43,28 +69,38 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult DeleteUser(int id)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         _userRepository.DeleteUser(id);
         return RedirectToAction("ManageUsers");
     }
 
-    // -------------- SKIJE ----------------
+    // -------------- SKIS ----------------
     public IActionResult ManageSkis()
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         var skis = _skiRepository.GetAllSkis();
         return View("ManageSkis", skis);
     }
 
     [HttpGet]
-    //Klikom na add ski dugme samo vraca view na koji treba ici
     public IActionResult AddSki()
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         return View("AddSki");
     }
 
     [HttpPost]
-    // Upisuje nove skije koje smo ubacili i proverava da li su sva polja ok
     public IActionResult AddSki(Ski ski)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         if (ModelState.IsValid)
         {
             _skiRepository.AddSki(ski);
@@ -75,9 +111,11 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    // Klikom na edit dugme sve informacije o skiji se ispisu
-    public IActionResult EditSki(int id) 
+    public IActionResult EditSki(int id)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         var ski = _skiRepository.GetSkiById(id);
         if (ski == null) return NotFound();
 
@@ -85,9 +123,11 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    // Ako nesto izmenimo,ono ce to i upisati
     public IActionResult EditSki(Ski ski)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         if (ModelState.IsValid)
         {
             _skiRepository.UpdateSki(ski);
@@ -99,6 +139,9 @@ public class AdminController : Controller
 
     public IActionResult DeleteSki(int id)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         _skiRepository.DeleteSki(id);
         _skiRepository.SaveChanges();
         return RedirectToAction("ManageSkis");
@@ -106,6 +149,9 @@ public class AdminController : Controller
 
     public IActionResult AdjustStock(int id, int quantity)
     {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
         var ski = _skiRepository.GetSkiById(id);
         if (ski == null) return NotFound();
 
@@ -114,5 +160,15 @@ public class AdminController : Controller
         _skiRepository.SaveChanges();
 
         return RedirectToAction("ManageSkis");
+    }
+
+    // -------------- Orderi ----------------
+    public IActionResult ViewOrders()
+    {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
+        var orders = _orderRepository.GetAllOrders();
+        return View("ViewOrders", orders);
     }
 }

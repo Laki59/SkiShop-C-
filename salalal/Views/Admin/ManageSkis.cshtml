@@ -23,7 +23,7 @@
                         <td>@ski.Name</td>
                         <td>@ski.Model</td>
                         <td>$@ski.Price</td>
-                        <td>@ski.StockQuantity</td>
+                    <td>@ski.StockQuantity,@(ski.StockQuantity > 5 ? "In Stock" : ski.StockQuantity > 0 ? "Low Stock" : "Out of Stock")</td>
                         <td>
                             <a class="btn btn-warning btn-sm" href="@Url.Action("EditSki", "Admin", new { id = ski.Id })">Edit</a>
                             <a class="btn btn-danger btn-sm" href="@Url.Action("DeleteSki", "Admin", new { id = ski.Id })"

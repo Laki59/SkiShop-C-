@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using salalal.Models;
 using salalal.Repositories;
@@ -19,7 +18,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login"; // Redirect unauthenticated users to login
-        options.AccessDeniedPath = "/Account/AccessDenied"; // Redirect unauthorized users
+        options.AccessDeniedPath = "/Home/Index"; // Redirect unauthorized users to Home
     });
 
 builder.Services.AddAuthorization(options =>
@@ -27,12 +26,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
 
-// Configure session middleware
+// Configure repositories (dependency injection)
 builder.Services.AddScoped<ISkiRepository, SkiRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
+// Configure session middleware
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -55,8 +55,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}"); // Set default page to Ski Index
+        pattern: "{controller=Home}/{action=Index}/{id?}"); // Set default page to Home Index
 });
-
 
 app.Run();

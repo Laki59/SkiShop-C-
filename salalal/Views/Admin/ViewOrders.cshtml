@@ -1,38 +1,35 @@
 ﻿@model List<salalal.Models.Order>
 
-<h2>All Orders</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>User</th>
-            <th>Date</th>
-            <th>Items</th>
-            <th>Total Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
+<div class="container mt-4">
+    <h2 class="text-center mb-4">All Orders</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
             <tr>
-                <td>@order.Id</td>
-                <td>@order.User.Username</td>
-                <td>@order.OrderDate.ToShortDateString()</td>
-                <td>
-                    <ul>
-                        @foreach (var item in order.OrderItems)
-                        {
-                            <li>@item.Ski.Name - @item.Quantity x $@item.Price</li>
-                        }
-                    </ul>
-                </td>
-                <td>$@(order.OrderItems.Sum(i => i.Quantity * i.Price))</td>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
             </tr>
-        }
-    </tbody>
-</table>
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.User.Username</td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <li>@item.Ski.Name - @item.Quantity x $@item.Ski.Price</li>
+                            }
+                        </ul>
+                        <strong>Total: $@(order.OrderItems.Sum(item => item.Quantity * item.Ski.Price))</strong>
+                    </td>
+
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

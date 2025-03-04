@@ -1,5 +1,7 @@
 ﻿using salalal.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace salalal.Repositories
 {
@@ -15,6 +17,16 @@ namespace salalal.Repositories
         public IEnumerable<Order> GetAllOrders()
         {
             return _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Ski)
+                .ToList();
+        }
+
+        public IEnumerable<Order> GetPendingOrders()
+        {
+            return _context.Orders
+                .Where(o => o.Status == "Pending")
                 .Include(o => o.User)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Ski)
@@ -41,8 +53,19 @@ namespace salalal.Repositories
 
         public void AddOrder(Order order)
         {
+            order.Status = "Pending"; // Default za status je Pending
             _context.Orders.Add(order);
             _context.SaveChanges();
+        }
+
+        public void UpdateOrderStatus(int orderId, string status)
+        {
+            var order = _context.Orders.Find(orderId);
+            if (order != null)
+            {
+                order.Status = status;
+                _context.SaveChanges();
+            }
         }
 
         public void SaveChanges()
