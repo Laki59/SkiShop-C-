@@ -3,6 +3,7 @@
 body {
     font-family: 'Poppins',sans-serif;
 }
+/*Home*/
 
 button {
     font-size: 0.9rem;
@@ -15,41 +16,35 @@ button {
     text-transform: uppercase;
     cursor: pointer;
     transition: 0.3s ease;
-
 }
 
-    button:hover {
+button:hover {
         background-color: rgb(26, 26, 250);
     }
 
 p {
     font-size: 1.5rem;
-
 }
 
 
 h1 {
     font-size: 2.5rem;
     font-weight: 700;
-
 }
 
 h2 {
     font-size: 1.9rem;
     font-weight: 550;
-
 }
 
 h3 {
     font-size: 1.5rem;
     font-weight: 800;
-
 }
 
 h4 {
     font-size: 1.1rem;
     font-weight: 620;
-
 }
 
 #home {
@@ -67,9 +62,10 @@ h4 {
 }
 
 
-    #home span {
+#home span {
         color: blue;
     }
+
 #banner {
     background-image: url('../Images/banner.jpg');
     width: 100%;
@@ -83,7 +79,7 @@ h4 {
     justify-content: center;
     align-items: center;
 }
-
+/*Kolica*/
 .cart-container {
     max-width: 800px;
     margin: 50px auto;
@@ -99,13 +95,13 @@ h4 {
     margin-top: 20px;
 }
 
-    .cart-table th, .cart-table td {
+.cart-table th, .cart-table td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
     }
 
-    .cart-table th {
+.cart-table th {
         background: #f4f4f4;
     }
 
@@ -126,24 +122,24 @@ h4 {
     margin-top: 20px;
 }
 
-    .cart-buttons .btn {
+.cart-buttons .btn {
         padding: 10px 20px;
         font-size: 16px;
         border-radius: 5px;
         text-decoration: none;
     }
 
-    .cart-buttons .btn-primary {
+.cart-buttons .btn-primary {
         background: #007bff;
         color: white;
     }
 
-    .cart-buttons .btn-secondary {
+.cart-buttons .btn-secondary {
         background: #6c757d;
         color: white;
     }
 
-    .cart-buttons .btn:hover {
+.cart-buttons .btn:hover {
         opacity: 0.8;
     }
 
@@ -153,101 +149,183 @@ h4 {
     color: #888;
     margin-top: 20px;
 }
+
+/*Ski detalji*/
 .ski-details-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 50px auto;
     display: flex;
     background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    gap: 20px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    gap: 30px;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.ski-details-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+/* Stilizovanje slike*/
 .ski-image img {
-    width: 300px;
+    width: 350px;
     height: auto;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+    .ski-image img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+/* Stilizovanje info */
 .ski-info {
     flex: 1;
 }
 
-    .ski-info h2 {
-        font-size: 28px;
-        margin-bottom: 10px;
+.ski-info h2 {
+        font-size: 30px;
+        margin-bottom: 15px;
+        color: #004080;
+        font-weight: bold;
     }
 
-    .ski-info p {
-        font-size: 16px;
-        margin-bottom: 8px;
+.ski-info p {
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #555;
     }
 
-.ski-buttons {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
+/* Stock */
+.ski-stock {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 8px;
+    display: inline-block;
 }
 
-    .ski-buttons .btn {
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-        text-decoration: none;
+.ski-stock.in-stock {
+        background-color: #28a745;
+        color: white;
     }
 
-    .ski-buttons .btn-primary {
+.ski-stock.low-stock {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+.ski-stock.out-of-stock {
+        background-color: #dc3545;
+        color: white;
+    }
+
+
+.ski-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 20px;
+}
+
+.ski-buttons .btn {
+        padding: 12px 25px;
+        font-size: 17px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+.ski-buttons .btn-primary {
         background: #007bff;
         color: white;
     }
 
-    .ski-buttons .btn-secondary {
+.ski-buttons .btn-secondary {
         background: #6c757d;
         color: white;
     }
 
-    .ski-buttons .btn:hover {
-        opacity: 0.8;
+.ski-buttons .btn:hover {
+        opacity: 0.85;
+        transform: scale(1.05);
     }
 
-.account-container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
+/*Ski index hover za karticu*/
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Slika nece ici preko druge */
+}
+
+.card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+.card-img-top {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover .card-img-top {
+    opacity: 0.85;
+    transform: scale(1.1);
+}
+
+.card-body {
+    position: relative;
+    z-index: 2; /* Tekst nece ici preko slike*/
+}
+
+
+.container-blog {
+    margin-top: 2rem;
+    padding: 50px;
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.user-info p {
-    font-size: 16px;
-    margin: 10px 0;
-}
-
-.orders-list {
-    margin-top: 20px;
-}
-
-.order-card {
-    background: #f8f9fa;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    text-align: left;
-}
-
-    .order-card h4 {
-        margin-bottom: 10px;
+    .section.show {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    .order-card ul {
-        padding-left: 20px;
+    .section:nth-child(even) {
+        flex-direction: row-reverse;
     }
 
-.btn-primary {
-    margin-top: 15px;
+    .section img {
+        width: 45%;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+.section-content {
+    width: 50%;
 }
 
+    .section-content h2 {
+        color: #004080;
+        margin-top: 0;
+    }
 
+    .section-content p {
+        margin-bottom: 1rem;
+    }
