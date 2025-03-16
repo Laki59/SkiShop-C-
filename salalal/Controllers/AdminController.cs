@@ -35,6 +35,7 @@ public class AdminController : Controller
     // -------------- USERS ----------------
     public IActionResult ManageUsers()
     {
+        //Sve podatke o userima i salje na ManageUsers view
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
@@ -45,6 +46,7 @@ public class AdminController : Controller
     [HttpGet]
     public IActionResult EditUser(int id)
     {
+        //Prikazuje formu za izmenu na osnovu ID-a user-a
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
@@ -55,6 +57,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    //Cuva gornje izmene
     public IActionResult EditUser(User user)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -67,6 +70,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    //Brise korisnika po ID-u
     public IActionResult DeleteUser(int id)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -77,6 +81,8 @@ public class AdminController : Controller
     }
 
     // -------------- SKIS ----------------
+    
+    //Isto kao ManageUser samo za skije
     public IActionResult ManageSkis()
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -87,6 +93,7 @@ public class AdminController : Controller
     }
 
     [HttpGet]
+    //Prikazuje formu za dodavanje
     public IActionResult AddSki()
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -96,6 +103,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    //Dodaje novu skiju ako je valdina
     public IActionResult AddSki(Ski ski)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -111,6 +119,7 @@ public class AdminController : Controller
     }
 
     [HttpGet]
+    //Edit isti za skije kao i za user-a
     public IActionResult EditSki(int id)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -147,6 +156,7 @@ public class AdminController : Controller
         return RedirectToAction("ManageSkis");
     }
 
+    //Menja kolicinu stanja
     public IActionResult AdjustStock(int id, int quantity)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -163,6 +173,8 @@ public class AdminController : Controller
     }
 
     // -------------- Orderi ----------------
+
+    //Prikaz svih porudzbina
     public IActionResult ViewOrders()
     {
         var redirect = RedirectToHomeIfNotAdmin();

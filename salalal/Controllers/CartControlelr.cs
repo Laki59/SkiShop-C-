@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace salalal.Controllers
 {
-    [Authorize]
+    [Authorize]//Samo prijavljeni korisnici
     public class CartController : Controller
     {
         private readonly ISkiRepository _skiRepository;
@@ -19,8 +19,10 @@ namespace salalal.Controllers
             _orderItemRepository = orderItemRepository;
         }
 
+        // Prikazuje sadržaj korpe
         public IActionResult Index()
         {
+            // Učitavanje korpe iz sesije ili kreiranje nove prazne liste
             var cart = HttpContext.Session.GetObjectFromJson<List<OrderItem>>("Cart") ?? new List<OrderItem>();
             ViewBag.CartCount = cart.Sum(item => item.Quantity);
 
@@ -32,15 +34,18 @@ namespace salalal.Controllers
             return View(cart);
         }
 
+        // Dodaje proizvod u korpu
         [Route("Cart/AddToCart/{skiId}")]
         public IActionResult AddToCart(int skiId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<List<OrderItem>>("Cart") ?? new List<OrderItem>();
+            // Dohvatanje skije iz baze podataka
             var ski = _skiRepository.GetSkiById(skiId);
 
             if (ski == null)
                 return NotFound();
 
+            // Provera da li ima dovoljno proizvoda na stanju
             if (ski.StockQuantity <= 0)
             {
                 TempData["Error"] = $"Not enough stock for {ski.Name}";
@@ -48,6 +53,7 @@ namespace salalal.Controllers
             }
 
             var existingItem = cart.FirstOrDefault(i => i.SkiId == skiId);
+            // Provera da li proizvod već postoji u korpi,ako da povecava za jedan,ako ne upisuje ga
             if (existingItem != null)
             {
                 existingItem.Quantity++;
@@ -62,12 +68,13 @@ namespace salalal.Controllers
                 });
             }
 
-            ski.StockQuantity--;  // Decrease stock when adding to cart
+            ski.StockQuantity--;  // Smanjuje količinu na stanju kada korisnik doda proizvod u korpu
             _skiRepository.UpdateSki(ski);
 
             HttpContext.Session.SetObjectAsJson("Cart", cart);
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public IActionResult RemoveFromCart(int skiId)
         {
@@ -78,7 +85,7 @@ namespace salalal.Controllers
             {
                 cart.Remove(itemToRemove);
 
-                // Increase stock back when removing from cart
+                // Vraća obrisanu količinu nazad na stanje
                 var ski = _skiRepository.GetSkiById(skiId);
                 if (ski != null)
                 {
@@ -86,6 +93,7 @@ namespace salalal.Controllers
                     _skiRepository.UpdateSki(ski);
                 }
 
+                // Ažurira sesiju sa novim podacima
                 HttpContext.Session.SetObjectAsJson("Cart", cart);
             }
 
@@ -95,6 +103,7 @@ namespace salalal.Controllers
 
         public IActionResult Checkout()
         {
+            // Dohvata podatke o korpi iz sesije
             var cart = HttpContext.Session.GetObjectFromJson<List<OrderItem>>("Cart");
 
             if (cart == null || !cart.Any())
@@ -102,15 +111,22 @@ namespace salalal.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Dohvata ID trenutno prijavljenog korisnika
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userIdClaim != null)
             {
                 var userId = int.Parse(userIdClaim);
-                var order = new Order { UserId = userId, OrderDate = DateTime.Now };
+                // Kreira novi objekat narudžbine
+                var order = new Order
+                {
+                    UserId = userId, 
+                    OrderDate = DateTime.Now 
+                };
 
                 _orderRepository.AddOrder(order);
 
+                // Dodaje svaki proizvod iz korpe u narudžbinu
                 foreach (var item in cart)
                 {
                     var orderItem = new OrderItem
