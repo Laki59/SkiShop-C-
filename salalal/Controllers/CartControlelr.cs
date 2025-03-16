@@ -103,7 +103,7 @@ namespace salalal.Controllers
 
         public IActionResult Checkout()
         {
-            // Dohvata podatke o korpi iz sesije
+            // Dohvata podatke o korpi iz sesijee
             var cart = HttpContext.Session.GetObjectFromJson<List<OrderItem>>("Cart");
 
             if (cart == null || !cart.Any())
