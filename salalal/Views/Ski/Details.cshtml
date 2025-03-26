@@ -1,6 +1,8 @@
-﻿<div class="ski-details-container">
+﻿@model salalal.Models.Ski
+
+<div class="ski-details-container">
     <div class="ski-image">
-        <img src="~/Images/alpi.jpg" alt="Ski Image">
+        <img src="@Url.Content(Model.ImagePath)" alt="Ski Image">
     </div>
 
     <div class="ski-info">

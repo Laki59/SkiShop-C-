@@ -7,7 +7,7 @@
         {
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card border-0 shadow-lg rounded-4">
-                    <img src="~/Images/alpi.jpg" class="card-img-top rounded-top-4" alt="@ski.Name" style="height: 250px; object-fit: cover;">
+                    <img src="@Url.Content(ski.ImagePath)" class="card-img-top rounded-top-4" alt="@ski.Name" style="height: 250px; object-fit: cover;">
                     <div class="card-body text-center">
                         <h5 class="card-title fw-bold">@ski.Name</h5>
                         <p class="card-text text-muted"><strong>Model:</strong> @ski.Model</p>
@@ -26,6 +26,3 @@
         }
     </div>
 </div>
-<style>
-
-</style>

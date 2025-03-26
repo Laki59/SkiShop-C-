@@ -6,8 +6,10 @@
         public string Name { get; set; }
         public string Model { get; set; }
         public decimal Price { get; set; }
-
         public int StockQuantity { get; set; }
-        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); 
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        // New property to store the image file path
+        public string? ImagePath { get; set; }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using salalal.Models;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 
@@ -10,12 +13,14 @@ public class AdminController : Controller
     private readonly IUserRepository _userRepository;
     private readonly ISkiRepository _skiRepository;
     private readonly IOrderRepository _orderRepository;
+    private readonly IWebHostEnvironment _webHostEnvironment; // For handling file uploads
 
-    public AdminController(IUserRepository userRepository, ISkiRepository skiRepository, IOrderRepository orderRepository)
+    public AdminController(IUserRepository userRepository, ISkiRepository skiRepository, IOrderRepository orderRepository, IWebHostEnvironment webHostEnvironment)
     {
         _userRepository = userRepository;
         _skiRepository = skiRepository;
         _orderRepository = orderRepository;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     private bool IsAdmin()
@@ -35,7 +40,6 @@ public class AdminController : Controller
     // -------------- USERS ----------------
     public IActionResult ManageUsers()
     {
-        //Sve podatke o userima i salje na ManageUsers view
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
@@ -46,7 +50,6 @@ public class AdminController : Controller
     [HttpGet]
     public IActionResult EditUser(int id)
     {
-        //Prikazuje formu za izmenu na osnovu ID-a user-a
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
@@ -57,7 +60,6 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    //Cuva gornje izmene
     public IActionResult EditUser(User user)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -70,7 +72,6 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    //Brise korisnika po ID-u
     public IActionResult DeleteUser(int id)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -81,8 +82,7 @@ public class AdminController : Controller
     }
 
     // -------------- SKIS ----------------
-    
-    //Isto kao ManageUser samo za skije
+
     public IActionResult ManageSkis()
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -93,7 +93,6 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    //Prikazuje formu za dodavanje
     public IActionResult AddSki()
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -103,14 +102,30 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    //Dodaje novu skiju ako je valdina
-    public IActionResult AddSki(Ski ski)
+    public IActionResult AddSki(Ski ski, IFormFile imageFile)
     {
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
         if (ModelState.IsValid)
         {
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                // Get folder path for saving images
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+                string uniqueFileName = Path.GetFileName(imageFile.FileName); // Keep original file name
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // Save image to wwwroot/Images
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    imageFile.CopyTo(fileStream);
+                }
+
+                // Store the relative path in the database
+                ski.ImagePath = "/Images/" + uniqueFileName;
+            }
+
             _skiRepository.AddSki(ski);
             _skiRepository.SaveChanges();
             return RedirectToAction("ManageSkis");
@@ -119,7 +134,6 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    //Edit isti za skije kao i za user-a
     public IActionResult EditSki(int id)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -132,14 +146,42 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult EditSki(Ski ski)
+    public IActionResult EditSki(Ski ski, IFormFile imageFile)
     {
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
         if (ModelState.IsValid)
         {
-            _skiRepository.UpdateSki(ski);
+            var existingSki = _skiRepository.GetSkiById(ski.Id);
+            if (existingSki == null)
+            {
+                return NotFound();
+            }
+
+            existingSki.Name = ski.Name;
+            existingSki.Model = ski.Model;
+            existingSki.Price = ski.Price;
+            existingSki.StockQuantity = ski.StockQuantity;
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                // Get folder path
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+                string uniqueFileName = Path.GetFileName(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // Save new image
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    imageFile.CopyTo(fileStream);
+                }
+
+                // Update image path
+                existingSki.ImagePath = "/Images/" + uniqueFileName;
+            }
+
+            _skiRepository.UpdateSki(existingSki);
             _skiRepository.SaveChanges();
             return RedirectToAction("ManageSkis");
         }
@@ -156,7 +198,6 @@ public class AdminController : Controller
         return RedirectToAction("ManageSkis");
     }
 
-    //Menja kolicinu stanja
     public IActionResult AdjustStock(int id, int quantity)
     {
         var redirect = RedirectToHomeIfNotAdmin();
@@ -174,7 +215,6 @@ public class AdminController : Controller
 
     // -------------- Orderi ----------------
 
-    //Prikaz svih porudzbina
     public IActionResult ViewOrders()
     {
         var redirect = RedirectToHomeIfNotAdmin();

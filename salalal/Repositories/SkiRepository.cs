@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using salalal.Models;
+﻿using salalal.Models;
 
 public class SkiRepository : ISkiRepository
 {
@@ -29,8 +27,22 @@ public class SkiRepository : ISkiRepository
 
     public void UpdateSki(Ski ski)
     {
-        _context.Skis.Update(ski);
-        SaveChanges(); // Commit immediately
+        var existingSki = _context.Skis.FirstOrDefault(s => s.Id == ski.Id);
+        if (existingSki != null)
+        {
+            existingSki.Name = ski.Name;
+            existingSki.Model = ski.Model;
+            existingSki.Price = ski.Price;
+            existingSki.StockQuantity = ski.StockQuantity;
+
+            // Only update the image if a new one is provided
+            if (!string.IsNullOrEmpty(ski.ImagePath))
+            {
+                existingSki.ImagePath = ski.ImagePath;
+            }
+
+            SaveChanges(); // Commit immediately
+        }
     }
 
     public void DeleteSki(int id)

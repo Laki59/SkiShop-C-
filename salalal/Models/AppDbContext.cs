@@ -8,14 +8,19 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Ski> Skis { get; set; }
     public DbSet<Order> Orders { get; set; }
-    public DbSet<OrderItem> OrderItems { get; set; } 
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<OrderItem>()
             .HasOne(oi => oi.Ski)
-            .WithMany()  
+            .WithMany()
             .HasForeignKey(oi => oi.SkiId);
-    }
 
+        // Ensure ImagePath column can be null and has a max length
+        modelBuilder.Entity<Ski>()
+            .Property(s => s.ImagePath)
+            .HasMaxLength(255)
+            .IsRequired(false);
+    }
 }
