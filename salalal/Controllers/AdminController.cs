@@ -111,18 +111,18 @@ public class AdminController : Controller
         {
             if (imageFile != null && imageFile.Length > 0)
             {
-                // Get folder path for saving images
+                // Folder za sliku
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
-                string uniqueFileName = Path.GetFileName(imageFile.FileName); // Keep original file name
+                string uniqueFileName = Path.GetFileName(imageFile.FileName); // Oreginalni fajl ime
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                // Save image to wwwroot/Images
+                // Cuvaj u wwwroot/Images
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     imageFile.CopyTo(fileStream);
                 }
 
-                // Store the relative path in the database
+                // Cuvati u DB
                 ski.ImagePath = "/Images/" + uniqueFileName;
             }
 
@@ -166,18 +166,18 @@ public class AdminController : Controller
 
             if (imageFile != null && imageFile.Length > 0)
             {
-                // Get folder path
+                // Ime foldera
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
                 string uniqueFileName = Path.GetFileName(imageFile.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                // Save new image
+                // Cuvaj slikui
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     imageFile.CopyTo(fileStream);
                 }
 
-                // Update image path
+                // Update putanju slike
                 existingSki.ImagePath = "/Images/" + uniqueFileName;
             }
 

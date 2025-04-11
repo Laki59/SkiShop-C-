@@ -39,7 +39,7 @@ public class UserRepository : IUserRepository
         {
             dbUser.Username = user.Username;
             dbUser.Role = user.Role;
-            dbUser.Password = user.Password; // Should be hashed in real scenarios
+            dbUser.Password = user.Password; // Hesirati
             _context.SaveChanges();
         }
     }

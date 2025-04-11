@@ -9,7 +9,6 @@
         public int StockQuantity { get; set; }
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-        // New property to store the image file path
         public string? ImagePath { get; set; }
     }
 }

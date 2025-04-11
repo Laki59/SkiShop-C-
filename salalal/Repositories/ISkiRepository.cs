@@ -7,5 +7,5 @@ public interface ISkiRepository
     void AddSki(Ski ski);
     void UpdateSki(Ski ski);
     void DeleteSki(int id);
-    void SaveChanges(); // Add this method to commit changes
+    void SaveChanges(); 
 }

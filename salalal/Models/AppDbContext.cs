@@ -17,7 +17,7 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(oi => oi.SkiId);
 
-        // Ensure ImagePath column can be null and has a max length
+        // Slika moze biti null i ima max karaktera(bug bez ovoga?)
         modelBuilder.Entity<Ski>()
             .Property(s => s.ImagePath)
             .HasMaxLength(255)

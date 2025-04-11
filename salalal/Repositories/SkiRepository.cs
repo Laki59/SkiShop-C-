@@ -22,7 +22,7 @@ public class SkiRepository : ISkiRepository
     public void AddSki(Ski ski)
     {
         _context.Skis.Add(ski);
-        SaveChanges(); // Commit immediately
+        SaveChanges(); 
     }
 
     public void UpdateSki(Ski ski)
@@ -35,13 +35,13 @@ public class SkiRepository : ISkiRepository
             existingSki.Price = ski.Price;
             existingSki.StockQuantity = ski.StockQuantity;
 
-            // Only update the image if a new one is provided
+            
             if (!string.IsNullOrEmpty(ski.ImagePath))
             {
                 existingSki.ImagePath = ski.ImagePath;
             }
 
-            SaveChanges(); // Commit immediately
+            SaveChanges(); 
         }
     }
 
@@ -51,7 +51,7 @@ public class SkiRepository : ISkiRepository
         if (ski != null)
         {
             _context.Skis.Remove(ski);
-            SaveChanges(); // Commit immediately
+            SaveChanges(); 
         }
     }
 
