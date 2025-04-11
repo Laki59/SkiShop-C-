@@ -37,10 +37,10 @@ Home:
 ![image](https://github.com/user-attachments/assets/e6692fe5-6070-4cb3-994f-166e6f66aef3)
 
 Products:
-![image](https://github.com/user-attachments/assets/56d44acb-c758-4067-b15e-e5829d7b51cb)
+![image](https://github.com/user-attachments/assets/d0d03649-7295-42bf-8543-cbc2663fd499)
 
 Details about products:
-![image](https://github.com/user-attachments/assets/a9b4fe40-f3af-4073-a618-99ac36e1a86a)
+![image](https://github.com/user-attachments/assets/746c53f1-f92d-444c-8623-633efaea3421)
 
 Cart:
 ![image](https://github.com/user-attachments/assets/5d0b3a35-6f2c-44ea-b6ae-21e75965f3d4)
