@@ -1,45 +1,34 @@
-Fully Functional EXEMPLE Project written in Asp.Net/C# technology Using SQL Database using Repositories and entity framework for e-commerce ski shop. Features in this projects are:
-- User Roles - Worker And Admin(Authorization and Authentification)
-- Dynamic fronted that updates with the database
-- Fully funcional cart
-- Recipt system after every transaction
-- Admin and Employee panels depending on the role
-- Fully working storage system with how many things are left in stock
-- Dynamic product page with display depending how many things are left in stock
+# Ski Shop Web App
 
-Roles in the project:
-*Admin:*
-- Can view all users,edit their roles or remove them,cant give admin role only employee.
-- Can view all skis in our database,edit,remove or add them.
-- View all orders connected to every customer.
+A web application built with ASP.NET Core MVC for managing a ski shop with full role-based access and shopping features.
 
-*Employee:*
-- Can approve or reject any order that comes from a customer.
-- View all orders connected to every customer.
+##  Built With
 
-*Customer(Logged out):*
-- Can only view home,blog and product page,adding to the cart or clicking cart,profile or any other page will redirect him to login.
+- ASP.NET Core MVC  
+- Entity Framework Core  
+- Bootstrap 5  
+- SQL Server  
 
-*Customer(Logged in):*
-- Can add to cart,checkout and order items.
-- Can check his profile and his previous orders.
+##  Roles
 
-If employee or customer try to breach into admin panel they'll be redirected to home page. Same if customer try to breach into emplyee,while admin can go into employee panel.
+- **Admin**: Manage users, skis, stock, and view all orders  
+- **Employee**: Approve customer orders  
+- **Customer**: Browse skis, add to cart, place orders  
 
-For the making of this project I used:
-- HTML
-- CSS
-- Bootstrap(heavy)
-- JavaScript
-- MySQL
-- C# ASP.Net Entity framework
+##  Features
 
-Things to be added:
-- Discount feature
-- More paying options and sandbox paying system
-- Overall fixing of design on certain pages
-- Adding more languages to the page
+- Manual login/registration (no Identity)
+- Role-based authorization  
+- Add/edit/delete skis with image upload  
+- Product catalog with dynamic image display and stock badges  
+- Cart, order placement, and approval system  
+- Clean Bootstrap UI with hover effects  
 
+##  To Do / Future Features
+
+-  **Reviews** (Users can leave ratings & comments on skis)
+-  **Wishlist** (Save skis for later)
+-  
 *FRONTEND*
 
 Home:
