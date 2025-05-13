@@ -17,8 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login"; // Redirect unauthenticated users to login
-        options.AccessDeniedPath = "/Home/Index"; // Redirect unauthorized users to Home
+        options.LoginPath = "/Account/Login"; // Redirekcija
+        options.AccessDeniedPath = "/Home/Index"; // Redirekcija na kucu ako nije logovan
     });
 
 builder.Services.AddAuthorization(options =>

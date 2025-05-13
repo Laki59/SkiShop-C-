@@ -13,7 +13,7 @@ public class AdminController : Controller
     private readonly IUserRepository _userRepository;
     private readonly ISkiRepository _skiRepository;
     private readonly IOrderRepository _orderRepository;
-    private readonly IWebHostEnvironment _webHostEnvironment; // For handling file uploads
+    private readonly IWebHostEnvironment _webHostEnvironment; // za hendlovanje file uploadova
 
     public AdminController(IUserRepository userRepository, ISkiRepository skiRepository, IOrderRepository orderRepository, IWebHostEnvironment webHostEnvironment)
     {
@@ -83,14 +83,26 @@ public class AdminController : Controller
 
     // -------------- SKIS ----------------
 
-    public IActionResult ManageSkis()
+    public IActionResult ManageSkis(string searchTerm)
     {
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
-        var skis = _skiRepository.GetAllSkis();
+        var skis = _skiRepository.GetAllSkis(); //uzima sve skije
+
+        if (!string.IsNullOrEmpty(searchTerm))// ako je searchterm unesen filtrira po imenu(case sensitive(bug?))
+        {
+            skis = skis.Where(s => s.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        else//ako nema search terma sve prikazi
+        {
+            skis = skis.ToList();
+        }
+
         return View("ManageSkis", skis);
     }
+
+
 
     [HttpGet]
     public IActionResult AddSki()
@@ -215,12 +227,34 @@ public class AdminController : Controller
 
     // -------------- Orderi ----------------
 
-    public IActionResult ViewOrders()
+    public IActionResult ViewOrders(string searchTerm)
     {
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
         var orders = _orderRepository.GetAllOrders();
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            orders = orders
+                .Where(o =>
+                    o.User.Username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    o.Id.ToString().Contains(searchTerm))
+                .ToList();
+        }
+
         return View("ViewOrders", orders);
     }
+
+    [HttpPost]
+    public IActionResult DeleteOrder(int id)
+    {
+        var redirect = RedirectToHomeIfNotAdmin();
+        if (redirect != null) return redirect;
+
+        _orderRepository.DeleteOrder(id);
+        return RedirectToAction("ViewOrders");
+    }
+
+
 }

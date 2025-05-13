@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using salalal.Models;
 
 public class AppDbContext : DbContext
