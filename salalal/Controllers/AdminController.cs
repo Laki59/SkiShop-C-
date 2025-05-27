@@ -43,6 +43,7 @@ public class AdminController : Controller
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
+        //Uzima sve korisnike iz DB i vraca ih na ManageUsers view
         var users = _userRepository.GetAllUsers();
         return View("ManageUsers", users);
     }
@@ -53,6 +54,7 @@ public class AdminController : Controller
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
+        //Za edit sam uzeo da korisnika nadje po ID-u,ako ga ne nadje,vraca 404
         var user = _userRepository.GetUserById(id);
         if (user == null) return NotFound();
 
@@ -67,6 +69,7 @@ public class AdminController : Controller
 
         if (!ModelState.IsValid) return View(user);
 
+        //Updatuje korisnika u DB
         _userRepository.UpdateUser(user);
         return RedirectToAction("ManageUsers");
     }
@@ -77,6 +80,7 @@ public class AdminController : Controller
         var redirect = RedirectToHomeIfNotAdmin();
         if (redirect != null) return redirect;
 
+        //Deletuje korisnika i refreshuje stranicu
         _userRepository.DeleteUser(id);
         return RedirectToAction("ManageUsers");
     }

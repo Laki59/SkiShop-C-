@@ -31,7 +31,8 @@ public class EmployeeController : Controller
         if (order == null) return NotFound();
 
         order.Status = "Approved";
-        _orderRepository.SaveChanges(); // Update order status in the database
+        //Updajtuje order status
+        _orderRepository.SaveChanges(); 
 
         return RedirectToAction("ManageOrders");
     }
